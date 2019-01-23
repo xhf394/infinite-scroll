@@ -36,7 +36,8 @@ const getHackerNewsUrl = (value, page) =>
 class App extends React.Component {
   constructor(props) {
     super(props);
-
+    
+    //initiate value 
     this.state = {
       hits: [],
       page: null,
@@ -48,7 +49,14 @@ class App extends React.Component {
       isError: false,
     };
   }
-
+  
+  /**
+  * onInitialSearch() executes by first search
+    it will trigger api to fetch data
+    @params value or null
+    @return {null} no side effects
+    @return {value} pass initial page number and fetch data
+  */ 
   onInitialSearch = (e) => {
     e.preventDefault();
 
