@@ -61,11 +61,13 @@ class App extends React.Component {
     e.preventDefault();
 
     const { value } = this.input;
-
+    
+    //handle null value;
     if (value === '') {
       return;
     }
-
+    
+    //execute search process
     this.fetchStories(value, 0);
   }
   
@@ -100,7 +102,10 @@ class App extends React.Component {
       <div className="page">
         <div className="interactions">
           <form type="submit" onSubmit={this.onInitialSearch}>
-            <input type="text" ref={node => this.input = node} />
+            <input 
+              type="text" 
+              //ref callback function
+              ref={node => this.input = node} />
             <button type="submit">Search</button>
           </form>
         </div>
@@ -148,7 +153,10 @@ class List extends React.Component {
       this.props.list.length &&
 
       //only trigger once reach bottom, no pending request, the scroll event will trigger 
-      !this.props.isLoading
+      !this.props.isLoading &&
+
+      //inactive when there is an error
+      !this.props.isError
     ) {
 
       //executes new pagniated search
@@ -158,7 +166,7 @@ class List extends React.Component {
 
   render() {
     //pass arguments 
-    const {list, page, isLoading, onPaginatedSearch} = this.props;
+    const {list, page, isLoading, isError, onPaginatedSearch} = this.props;
     
     return (
       <div>
@@ -185,6 +193,26 @@ class List extends React.Component {
             </button>
           }
         </div>
+        
+        <div className="interactions"
+         //mannually handle error
+        >
+        {(page !== null && !isLoading && isError) &&
+        <div>
+          <div>
+            Something went wrong...
+          </div>
+          <button
+          //add a button to manually search again 
+          type="button"
+          onClick={onPaginatedSearch}
+          >
+          Try Again
+          </button>
+        </div>  
+        }   
+        </div> 
+
       </div>
     )
   }
